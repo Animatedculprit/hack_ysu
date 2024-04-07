@@ -1,0 +1,36 @@
+import 'dart:core';
+import 'package:native_video_player/native_video_player.dart';
+import 'package:flutter/material.dart';
+import 'app-view.dart';
+
+void main() {
+  runApp(const Camera_main_Page());
+}
+class Camera_main_Page extends StatefulWidget {
+  const Camera_main_Page({super.key});
+
+  @override
+  State<Camera_main_Page> createState() => camera_main_Page_State();
+}
+
+class camera_main_Page_State extends State<Camera_main_Page> {
+ @override
+ Widget build(BuildContext context) {
+    return NativeVideoPlayerView(
+      onViewReady: (controller) async {
+        try {
+          final videoSource = await VideoSource.init(
+            path: 'sample-30s.mp4',
+            type: VideoSourceType.asset,
+          );
+          await controller.loadVideoSource(videoSource);
+          // Assuming you want to start playing the video as soon as it's loaded
+          controller.play();
+        } catch (e) {
+          // Handle any exceptions that occur during video loading or playback
+          print('Error loading video: $e');
+        }
+      },
+    );
+ }
+}
